@@ -4,7 +4,7 @@
 
 <PageTitle>Index</PageTitle>
 
-@if (recipeList == null)
+@if (recipes == null)
 {
     <p><em>Loading data...</em></p>
 }
@@ -15,50 +15,9 @@ else
             <h1>Find a recipe</h1>
 
         </div>
-        <div class="container py-4">
-            <h3>Add ingredients</h3>
-            <div class="row">
-                <div class="col-sm">
-                    <input @bind="ingredient" @onkeydown="@Enter" type="text" class="form-control" placeholder="carrots...cheese..." aria-label="Ingredients" aria-describedby="basic-addon2">
-                </div>
-                <div class="col-sm">
-                    <button @onclick="addIngredient"  type="button" class="btn btn-outline-primary">Add</button>
-                </div>
-
-
-            </div>
-            
-
-        </div>
-        <div class="container">
-            <div class="text-dark  row">
-                @if(inputIngredients.Count !=0){
-                    @foreach (string i in inputIngredients)
-                    {
-                        <div class="col-2  ">
-                            <button @onclick="()=>removeIngredient(i)" class="p-2 text-center btn btn-outline-danger my-2 rounded-3">
-                                <span>@i</span>
-                            </button>
-
-                        </div>
-
-                    }
-                    <div class="mt-5">
-                        <button type="button" class="btn btn-success">Search</button>
-
-                    </div>
-                }
-                    
-
-                    
-
-                
-
-            </div>
-        </div>
         <div class="container flex py-4">
             <div class="row">
-                @foreach (var recipe in recipeList)
+                @foreach (var recipe in recipes.recipes)
                 {
 
                     <div class="card bg-secondary col-sm my-4 mx-2 text-white p-2" style="width: 18rem;">
@@ -68,6 +27,9 @@ else
                         </div>
                     </div>
                 }
+            </div>
+            <div>
+                <button @onclick="GetRecipes" class="btn btn-outline-primary">Clear</button>
             </div>
         </div>
 
@@ -79,47 +41,58 @@ else
 
 
 @code{
-    private Recipe[]? recipeList = null;
-    private string? ingredient;
-    private List<string> inputIngredients = new List<string>();
+    private Recipes recipes;
+    //private string? ingredient;
+    //private List<string> inputIngredients = new List<string>();
     private string? errorMessage;
 
-    private void addIngredient() {
+    //private void addIngredient() {
 
-        if (ingredient == "" || ingredient == null || ingredient.Contains(" ") || ingredient.Length>=10)
+    //    if (ingredient == "" || ingredient == null || ingredient.Contains(" ") || ingredient.Length>=20)
+    //    {
+
+    //        return;
+    //    }
+    //    ingredient = ingredient.ToLower();
+
+    //    if (inputIngredients.Contains(ingredient))
+    //    {
+    //        return;
+    //    }
+
+    //    inputIngredients.Add(ingredient);
+    //    ingredient = "";
+
+
+
+    //}
+
+    //private void removeIngredient(string i)
+    //{
+    //    inputIngredients.Remove(i);
+
+    //}
+
+    //public void Enter(KeyboardEventArgs e)
+    //{
+    //    if (e.Code == "Enter" || e.Code == "NumpadEnter")
+    //    {
+    //        addIngredient();
+    //    }
+    //}
+
+    protected async Task GetRecipes(){
+        try
         {
+           recipes.recipes.Clear();
 
-            return;
+        }
+        catch (Exception e)
+        {
+            errorMessage = e.Message;
         }
 
-        if (inputIngredients.Contains(ingredient))
-        {
-            return;
-        }
-
-        inputIngredients.Add(ingredient);
-        ingredient = "";
-
-
-
     }
-
-    private void removeIngredient(string i)
-    {
-        inputIngredients.Remove(i);
-
-    }
-
-    public void Enter(KeyboardEventArgs e)
-    {
-        if (e.Code == "Enter" || e.Code == "NumpadEnter")
-        {
-            // ...
-        }
-    }
-        
-
-       
 
 
 
@@ -130,7 +103,7 @@ else
         try
         {
             // CORS needs to be enabled for Web API endpoint
-            recipeList = await Http.GetFromJsonAsync<Recipe[]>("https://api.spoonacular.com/recipes/findByIngredients?ingredients=apples,+flour,+sugar&number=4&apiKey=a40d131d82774277bd6d8971e51266ef");
+            recipes = await Http.GetFromJsonAsync<Recipes>("https://api.spoonacular.com/recipes/random?number=4&apiKey=a40d131d82774277bd6d8971e51266ef");
 
         }
         catch (Exception e)
@@ -140,50 +113,123 @@ else
 
     }
 
-    public class MissedIngredient
+    public class AnalyzedInstruction
+    {
+        public string name { get; set; }
+        public List<Step> steps { get; set; }
+    }
+
+    public class Equipment
     {
         public int id { get; set; }
-        public double amount { get; set; }
-        public string unit { get; set; }
-        public string unitLong { get; set; }
-        public string unitShort { get; set; }
-        public string aisle { get; set; }
         public string name { get; set; }
-        public string original { get; set; }
-        public string originalName { get; set; }
-        public List<string> meta { get; set; }
-        public string extendedName { get; set; }
+        public string localizedName { get; set; }
         public string image { get; set; }
     }
 
-
-    public class UsedIngredient
+    public class ExtendedIngredient
     {
         public int id { get; set; }
-        public double amount { get; set; }
-        public string unit { get; set; }
-        public string unitLong { get; set; }
-        public string unitShort { get; set; }
         public string aisle { get; set; }
+        public string image { get; set; }
+        public string consistency { get; set; }
         public string name { get; set; }
+        public string nameClean { get; set; }
         public string original { get; set; }
         public string originalName { get; set; }
+        public double amount { get; set; }
+        public string unit { get; set; }
         public List<string> meta { get; set; }
+        public Measures measures { get; set; }
+    }
+
+    public class Ingredient
+    {
+        public int id { get; set; }
+        public string name { get; set; }
+        public string localizedName { get; set; }
         public string image { get; set; }
+    }
+
+    public class Length
+    {
+        public int number { get; set; }
+        public string unit { get; set; }
+    }
+
+    public class Measures
+    {
+        public Us us { get; set; }
+        public Metric metric { get; set; }
+    }
+
+    public class Metric
+    {
+        public double amount { get; set; }
+        public string unitShort { get; set; }
+        public string unitLong { get; set; }
     }
 
     public class Recipe
     {
+        public bool vegetarian { get; set; }
+        public bool vegan { get; set; }
+        public bool glutenFree { get; set; }
+        public bool dairyFree { get; set; }
+        public bool veryHealthy { get; set; }
+        public bool cheap { get; set; }
+        public bool veryPopular { get; set; }
+        public bool sustainable { get; set; }
+        public bool lowFodmap { get; set; }
+        public int weightWatcherSmartPoints { get; set; }
+        public string gaps { get; set; }
+        public int preparationMinutes { get; set; }
+        public int cookingMinutes { get; set; }
+        public int aggregateLikes { get; set; }
+        public int healthScore { get; set; }
+        public string creditsText { get; set; }
+        public string license { get; set; }
+        public string sourceName { get; set; }
+        public double pricePerServing { get; set; }
+        public List<ExtendedIngredient> extendedIngredients { get; set; }
         public int id { get; set; }
         public string title { get; set; }
+        public int readyInMinutes { get; set; }
+        public int servings { get; set; }
+        public string sourceUrl { get; set; }
         public string image { get; set; }
         public string imageType { get; set; }
-        public int usedIngredientCount { get; set; }
-        public int missedIngredientCount { get; set; }
-        public List<MissedIngredient> missedIngredients { get; set; }
-        public List<UsedIngredient> usedIngredients { get; set; }
-        public List<object> unusedIngredients { get; set; }
-        public int likes { get; set; }
+        public string summary { get; set; }
+        public List<object> cuisines { get; set; }
+        public List<string> dishTypes { get; set; }
+        public List<string> diets { get; set; }
+        public List<object> occasions { get; set; }
+        public string instructions { get; set; }
+        public List<AnalyzedInstruction> analyzedInstructions { get; set; }
+        public object originalId { get; set; }
+        public string spoonacularSourceUrl { get; set; }
+    }
+
+    public class Recipes
+    {
+        public List<Recipe> recipes { get; set; }
+    }
+
+
+    public class Step
+    {
+        public int number { get; set; }
+        public string step { get; set; }
+        public List<Ingredient> ingredients { get; set; }
+        public List<Equipment> equipment { get; set; }
+        public Length length { get; set; }
+    }
+
+    public class Us
+    {
+        public double amount { get; set; }
+        public string unitShort { get; set; }
+        public string unitLong { get; set; }
     }
 
 
