@@ -20,17 +20,21 @@ else
             <h3>Add ingredients</h3>
             <div class="row">
                 <div class="col-6">
-                    <input @bind="ingredient" @onkeydown="@Enter" type="text" class="form-control" placeholder="carrots...cheese..." aria-label="Ingredients" aria-describedby="basic-addon2">
+                    <input @bind="ingredient" type="text" class="form-control" placeholder="type something like 'cheese'" aria-label="Ingredients" aria-describedby="basic-addon2">
                 </div>
-                <div class="col-1">
+                <div class="col-sm-1 mx-3">
                     <button @onclick="addIngredient" type="button" class="btn btn-outline-primary">Add</button>
                 </div>
                 @if(inputIngredients.Count !=0){
-                    <div class="col-1">
+                    <div class="col-sm-1 col-md-3 mx-3">
                             <button @onclick="ClearIngredients" class="btn btn-outline-secondary">Clear</button>
 
                         </div>
                 }
+               
+                <div>
+                   <p class="text-white">@errorMessage</p>
+                </div>
 
             </div>
         </div>
@@ -42,7 +46,7 @@ else
                 {
                     @foreach (string i in inputIngredients)
                     {
-                        <div class="col-1">
+                        <div class="col-md-2 m-3">
                             <button @onclick="()=>removeIngredient(i)" class="text-center btn btn-outline-danger rounded-3">
                                 <span>@i</span>
                             </button>
@@ -106,18 +110,20 @@ else
 
         if (ingredient == "" || ingredient == null || ingredient.Contains(" ") || ingredient.Length>=20)
         {
-
+            errorMessage = "Ingredient must be 1-20 characters";
             return;
         }
         ingredient = ingredient.ToLower();
 
         if (inputIngredients.Contains(ingredient))
         {
+            errorMessage = $"{ingredient} already in list";
             return;
         }
 
         inputIngredients.Add(ingredient);
-        ingredient = "";
+        ingredient = null;
+        errorMessage = null;
 
 
 
@@ -127,14 +133,6 @@ else
     {
         inputIngredients.Remove(i);
 
-    }
-
-    public void Enter(KeyboardEventArgs e)
-    {
-        if (e.Code == "Enter" || e.Code == "NumpadEnter")
-        {
-            addIngredient();
-        }
     }
 
     protected async Task ClearIngredients(){
