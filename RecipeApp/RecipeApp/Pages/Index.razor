@@ -37,10 +37,26 @@ else
                 }
 
             </div>
+            <div class="row py-4">
+                    <h3>Select cuisine</h3>
+                <div class="col-6">
+                    <select class="form-select" @onchange="selectCuisine" aria-label="Default select example">
+                    <option selected>All</option>
+
+                    @foreach (Cuisine val in Enum.GetValues(typeof(Cuisine)))
+                    {
+                            <option value=@val>@val</option>
+                    }
+                </select>
+                </div>
+            </div>
         </div>
 
 
-        <div class="container">
+
+
+
+        <div class="container mt-4">
             <div class="text-dark row">
                 @if (inputIngredients.Count != 0)
                 {
@@ -100,11 +116,7 @@ else
          
             
         </div>
-            
-        
-            
-
-
+           
     </div>
 }
 @errorMessage
@@ -118,6 +130,15 @@ else
     private string? errorMessage;
     private string? fetchingMessage = "Searching...";
     private Boolean isFetching = false;
+    private string? cuisine;
+
+    private void selectCuisine(ChangeEventArgs e)
+    {
+        
+        cuisine = e.Value.ToString();
+        
+        
+    }
 
     private void addIngredient() {
 
@@ -140,11 +161,14 @@ else
 
     }
 
+
+
     private void removeIngredient(string i)
     {
         inputIngredients.Remove(i);
 
     }
+
 
     public void Enter(KeyboardEventArgs e)
     {
@@ -164,6 +188,7 @@ else
     }
 
     protected async Task GetRecipes(){
+  
         try
         {
             await ClearRecipes();
@@ -173,7 +198,7 @@ else
                 query += $"{i},+";
             }
 
-            string url = $"https://api.spoonacular.com/recipes/complexSearch?query={query}&number=100&apiKey=a40d131d82774277bd6d8971e51266ef";
+            string url = $"https://api.spoonacular.com/recipes/complexSearch?query={query}&cuisine={cuisine}&number=100&apiKey=a40d131d82774277bd6d8971e51266ef";
 
             Console.WriteLine(url);
 
@@ -208,6 +233,36 @@ else
             errorMessage = e.Message;
         }
 
+    }
+
+    public enum Cuisine
+    {
+        African,
+        American,
+        British,
+        Cajun,
+        Caribbean,
+        Chinese,
+        EasternEuropean,
+        European,
+        French,
+        German,
+        Greek,
+        Indian,
+        Irish,
+        Italian,
+        Japanese,
+        Jewish,
+        Korean,
+        LatinAmerican,
+        Mediterranean,
+        Mexican,
+        MiddleEastern,
+        Nordic,
+        Southern,
+        Spanish,
+        Thai,
+        Vietnamese
     }
 
     public class Result
