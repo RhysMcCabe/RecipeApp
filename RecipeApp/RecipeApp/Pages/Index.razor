@@ -20,7 +20,7 @@ else
             <h3>Add ingredients</h3>
             <div class="row">
                 <div class="col-6">
-                    <input @bind="ingredient" @onkeydown="@Enter" type="text" class="form-control" placeholder="carrots...cheese..." aria-label="Ingredients" aria-describedby="basic-addon2">
+                    <input @bind="ingredient" @onkeydown="@Enter" type="text" class="form-control" placeholder="enter a one word ingredient" aria-label="Ingredients" aria-describedby="basic-addon2">
                 </div>
                 <div class="col-1">
                     <button @onclick="addIngredient" type="button" class="btn btn-outline-primary">Add</button>
@@ -30,6 +30,10 @@ else
                             <button @onclick="ClearIngredients" class="btn btn-outline-secondary">Clear</button>
 
                         </div>
+                <div class="col-3">
+                        <button @onclick="GetRecipes" class="btn btn-outline-success">Search</button>
+
+                    </div>
                 }
 
             </div>
@@ -50,10 +54,7 @@ else
                         </div>
 
                     }
-                    <div class="row mt-5">
-                        <button @onclick="GetRecipes" class="btn btn-outline-success">Search</button>
-
-                    </div>
+                    
                             
                 }
 
@@ -65,25 +66,39 @@ else
         </div>
 
 
-        <div class="container-fluid content-row">
-            @if(recipes != null){
-                <div class="row mt-3">
-                
-            @foreach (var recipe in recipes.results)
+        <div class="container-fluid content-row align-content-center text-center">
+            @if (recipes.results.Count != 0)
             {
-                <div class="col-3 mt-3 pb-2">
+                <div class="row">
+                        @foreach (var recipe in recipes.results)
+                        {
+                            <div class="col-4 my-2">
 
-                <div class="card bg-white h-100 fw-bold text-dark p-2" style="width: 18rem;">
-                    <img class="text-center rounded" src="@recipe.image" alt="Card image cap">
-                    <div class="card-body">
-                        <p class="card-text">@recipe.title</p>
-                    </div>
+                                <div class="card bg-white h-100 fw-bold text-dark" style="width: 18rem;">
+                                    <img class="text-center rounded" src="@recipe.image" alt="Card image cap">
+                                        <div class="card-body">
+                                            <p class="card-text">@recipe.title</p>
+                                        </div>
+                                </div>
+                            </div>
+                        }
                 </div>
-                    </div>
             }
+            @if (recipes.results.Count == 0 && isFetching == false && inputIngredients.Count != 0)
+        {
+                <div class="text-dark bg-white fw-bold rounded p-1 m-3">
+                    <h1>No results found</h1>
                 </div>
-               
             }
+            @if (isFetching)
+            {
+                <div class="text-dark bg-white fw-bold rounded p-1 m-3">
+                    <h1>@fetchingMessage</h1>
+                </div>
+                
+            }
+         
+            
         </div>
             
         
@@ -98,9 +113,11 @@ else
 
 @code{
     private Recipes recipes;
-    private string? ingredient;
+    private string? ingredient= "cheese";
     private List<string> inputIngredients = new List<string>();
     private string? errorMessage;
+    private string? fetchingMessage = "Searching...";
+    private Boolean isFetching = false;
 
     private void addIngredient() {
 
@@ -155,12 +172,14 @@ else
             foreach(string i in inputIngredients){
                 query += $"{i},+";
             }
-            string url = $"https://api.spoonacular.com/recipes/complexSearch?query={query}&number=16&apiKey=a40d131d82774277bd6d8971e51266ef";
+
+            string url = $"https://api.spoonacular.com/recipes/complexSearch?query={query}&number=100&apiKey=a40d131d82774277bd6d8971e51266ef";
+
             Console.WriteLine(url);
 
-      
+            isFetching = true;
             recipes = await Http.GetFromJsonAsync<Recipes>(url);
-
+            isFetching = false;
         }
         catch (Exception e)
         {
@@ -177,8 +196,11 @@ else
 
         try
         {
+            addIngredient();
+            isFetching = true;
             // CORS needs to be enabled for Web API endpoint
-            recipes = await Http.GetFromJsonAsync<Recipes>($"https://api.spoonacular.com/recipes/complexSearch?query={ingredient}?number=4&apiKey=a40d131d82774277bd6d8971e51266ef");
+            recipes = await Http.GetFromJsonAsync<Recipes>($"https://api.spoonacular.com/recipes/complexSearch?query={ingredient}&number=6&apiKey=a40d131d82774277bd6d8971e51266ef");
+            isFetching = false;
 
         }
         catch (Exception e)
@@ -188,8 +210,6 @@ else
 
     }
 
- 
-   
     public class Result
     {
         public int id { get; set; }
