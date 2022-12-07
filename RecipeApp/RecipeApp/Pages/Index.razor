@@ -12,51 +12,48 @@ else
 {
     <div class="container text-white h-100">
         <div class="text-center  row">
-            <h1>Find a recipe</h1>
+            <h1 class="text-xl p-3 bg-secondary rounded">Find a recipe</h1>
 
         </div>
-        
-        <div class="container py-4">
-            <h3>Add ingredients</h3>
-            <div class="row">
-                <div class="col-6">
-                    <input @bind="ingredient" @onkeydown="@Enter" type="text" class="form-control" placeholder="enter a one word ingredient" aria-label="Ingredients" aria-describedby="basic-addon2">
-                </div>
-                <div class="col-sm-1 mx-3">
-                    <button @onclick="addIngredient" type="button" class="btn btn-outline-primary">Add</button>
-                </div>
-                @if(inputIngredients.Count !=0){
-                    <div class="col-sm-1 col-md-3 mx-3">
-                            <button @onclick="ClearIngredients" class="btn btn-outline-secondary">Clear</button>
-
-                        </div>
-                <div class="col-3">
-                        <button @onclick="GetRecipes" class="btn btn-outline-success">Search</button>
-
-                    </div>
-                }
-
-            </div>
-            <div class="row py-4">
-                    <h3>Select cuisine</h3>
-                <div class="col-6">
-                    <select class="form-select" @onchange="selectCuisine" aria-label="Default select example">
+        <div class="row text-center d-flex justify-content-center">
+            <h3>Select cuisine</h3>
+            <div class="col-6 ">
+                <select class="form-select text-center" @onchange="selectCuisine" aria-label="Default select example">
                     <option selected>All</option>
 
                     @foreach (Cuisine val in Enum.GetValues(typeof(Cuisine)))
                     {
-                            <option value=@val>@val</option>
+                        <option value=@val>@val</option>
                     }
                 </select>
-                </div>
             </div>
         </div>
 
+        <div class="container py-4 text-center">
+            <h3>Add ingredients</h3>
+            <div class="row d-flex justify-content-center">
+                <div class="col-6 text-center">
+                    <input @bind="ingredient" @onkeydown="@Enter" type="text" class="form-control" placeholder="enter a one word ingredient" aria-label="Ingredients" aria-describedby="basic-addon2">
+                </div>
+                <div class="row mt-4">
+                <div class="col-1 mx-3">
+                    <button @onclick="addIngredient" type="button" class="btn btn-outline-primary">Add</button>
+                </div>
+                
+                @if(inputIngredients.Count !=0){
+                    <div class="col-1 mx-3">
+                            <button @onclick="ClearIngredients" class="btn btn-outline-secondary">Clear</button>
 
+                        </div>
+                    <div class="col-1 mx-3">
+                        <button @onclick="GetRecipes" class="btn btn-outline-success">Search</button>
 
+                    </div>
+                }
+                </div>
 
-
-        <div class="container mt-4">
+            </div>
+            
             <div class="text-dark row">
                 @if (inputIngredients.Count != 0)
                 {
@@ -73,13 +70,15 @@ else
                     
                             
                 }
-
-                        
-
-            </div>
-           
+        </div>
             
         </div>
+
+
+
+
+
+        
 
 
         <div class="container-fluid content-row align-content-center text-center">
