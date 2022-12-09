@@ -6,18 +6,23 @@
 
 @if (recipes == null)
 {
-    <p><em>Loading data...</em></p>
+
+    <div class="d-flex justify-content-center">
+  <div class="spinner-border" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>
 }
 else
 {
-    <div class="container text-white h-100">
-        <div class="text-center  row">
+    <div class="container text-white h-100  ">
+        <div class="text-center row">
             <h1 class="text-xl p-3 bg-secondary rounded">Find a recipe</h1>
 
         </div>
-        <div class="row text-center d-flex justify-content-center">
+        <div class="row text-center d-flex justify-content-center mt-5">
             <h3>Select cuisine</h3>
-            <div class="col-6 ">
+            <div class="col-12 col-md-6 ">
                 <select class="form-select text-center" @onchange="selectCuisine" aria-label="Default select example">
                     <option selected>All</option>
 
@@ -32,7 +37,7 @@ else
         <div class="container py-4 text-center">
             <h3>Add ingredients</h3>
             <div class="row d-flex justify-content-center">
-                <div class="col-6 text-center">
+                <div class="col-12 col-md-6  text-center">
                     <input @bind="ingredient" type="text" class="form-control text-center" placeholder="enter a one word ingredient" aria-label="Ingredients" aria-describedby="basic-addon2">
                 </div>
                 @if (errorMessage != null)
@@ -43,16 +48,16 @@ else
 
                 }
                 <div class="row mt-4 d-flex justify-content-center">
-                <div class="col-1 mx-3">
+                    <div class="col-4 col-md-1  mx-md-3">
                         <button @onclick="addIngredient" type="button" class="btn btn-outline-primary">Add</button>
                 </div>
                 
                 @if(inputIngredients.Count !=0){
-                    <div class="col-1 mx-3">
+                        <div class="col-4 col-md-1 mx-md-3">
                             <button @onclick="ClearIngredients" class="btn btn-outline-secondary">Clear</button>
 
                         </div>
-                    <div class="col-1 mx-3">
+                        <div class="col-4 col-md-1 mx-md-3">
                         <button @onclick="GetRecipes" class="btn btn-outline-success">Search</button>
 
                     </div>
@@ -68,7 +73,7 @@ else
                 {
                     @foreach (string i in inputIngredients)
                     {
-                        <div class="col-md-2 m-3">
+                        <div class="col-4 col-md-1 mx-md-3 my-2">
                             <button @onclick="()=>removeIngredient(i)" class="text-center btn btn-outline-danger rounded-3">
                                 <span>@i</span>
                             </button>
@@ -90,13 +95,13 @@ else
         
 
 
-        <div class="container-fluid content-row align-content-center text-center">
+        <div class="container text-center">
             @if (recipes.results.Count != 0)
             {
-                <div class="row">
+                <div class="row align-content-center">
                         @foreach (var recipe in recipes.results)
                         {
-                            <div class="col-4 my-2">
+                        <div class="col-md-4 col-12 my-5">
 
                                 <div class="card bg-white h-100 fw-bold text-dark" style="width: 18rem;">
                                     <img class="text-center rounded" src="@recipe.image" alt="Card image cap">
@@ -116,8 +121,12 @@ else
             }
             @if (isFetching)
             {
-                <div class="text-dark bg-white fw-bold rounded p-1 m-3">
-                    <h1>@fetchingMessage</h1>
+                <div class="text-white text-xl bg-dark fw-bold rounded p-1 m-3">
+                    <div class="d-flex justify-content-center">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden"></span>
+                        </div>
+                    </div>
                 </div>
                 
             }
@@ -136,7 +145,6 @@ else
     private string? ingredient= "cheese";
     private List<string> inputIngredients = new List<string>();
     private string? errorMessage;
-    private string? fetchingMessage = "Searching...";
     private Boolean isFetching = false;
     private string? cuisine;
 
