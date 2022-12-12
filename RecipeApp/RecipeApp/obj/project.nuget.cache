@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "xY2fVOjB1MIe59CPlTujJNV+5Okl+0buIOc2/WgFxNNYl08sc0HlgOSMv8VpQsd3b0zAnmNyiRV8ajSn4lbsjQ==",
+  "dgSpecHash": "abItasTaZJHPJmFSNtL2DjhPABZRMFxV6QBFK/v7QRdZfq//AsjNuAEmeef6tU5UlPOAjvSlLrqtb1I9yTudag==",
   "success": true,
   "projectFilePath": "C:\\Users\\rhysm\\Projects\\EAD\\RecipeApp\\RecipeApp\\RecipeApp.csproj",
   "expectedPackageFiles": [
@@ -28,12 +28,14 @@
     "C:\\Users\\rhysm\\.nuget\\packages\\microsoft.extensions.primitives\\6.0.0\\microsoft.extensions.primitives.6.0.0.nupkg.sha512",
     "C:\\Users\\rhysm\\.nuget\\packages\\microsoft.jsinterop\\6.0.10\\microsoft.jsinterop.6.0.10.nupkg.sha512",
     "C:\\Users\\rhysm\\.nuget\\packages\\microsoft.jsinterop.webassembly\\6.0.10\\microsoft.jsinterop.webassembly.6.0.10.nupkg.sha512",
+    "C:\\Users\\rhysm\\.nuget\\packages\\newtonsoft.json\\12.0.1\\newtonsoft.json.12.0.1.nupkg.sha512",
+    "C:\\Users\\rhysm\\.nuget\\packages\\newtonsoft.json.bson\\1.0.2\\newtonsoft.json.bson.1.0.2.nupkg.sha512",
     "C:\\Users\\rhysm\\.nuget\\packages\\system.diagnostics.diagnosticsource\\6.0.0\\system.diagnostics.diagnosticsource.6.0.0.nupkg.sha512",
     "C:\\Users\\rhysm\\.nuget\\packages\\system.io.pipelines\\6.0.3\\system.io.pipelines.6.0.3.nupkg.sha512",
     "C:\\Users\\rhysm\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
     "C:\\Users\\rhysm\\.nuget\\packages\\system.text.encodings.web\\6.0.0\\system.text.encodings.web.6.0.0.nupkg.sha512",
     "C:\\Users\\rhysm\\.nuget\\packages\\system.text.json\\6.0.0\\system.text.json.6.0.0.nupkg.sha512",
-    "C:\\Users\\rhysm\\.nuget\\packages\\microsoft.netcore.app.runtime.mono.browser-wasm\\6.0.11\\microsoft.netcore.app.runtime.mono.browser-wasm.6.0.11.nupkg.sha512"
+    "C:\\Users\\rhysm\\.nuget\\packages\\microsoft.netcore.app.runtime.mono.browser-wasm\\6.0.10\\microsoft.netcore.app.runtime.mono.browser-wasm.6.0.10.nupkg.sha512"
   ],
   "logs": []
 }
